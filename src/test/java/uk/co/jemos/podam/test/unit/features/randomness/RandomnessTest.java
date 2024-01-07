@@ -1,10 +1,9 @@
 package uk.co.jemos.podam.test.unit.features.randomness;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Title;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import net.serenitybdd.annotations.Title;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import uk.co.jemos.podam.api.PodamUtils;
 import uk.co.jemos.podam.test.unit.AbstractPodamSteps;
@@ -12,7 +11,7 @@ import uk.co.jemos.podam.test.unit.AbstractPodamSteps;
 /**
  * Created by daivanov on 05/02/2017.
  */
-@RunWith(SerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class RandomnessTest extends AbstractPodamSteps {
 
 	@Test

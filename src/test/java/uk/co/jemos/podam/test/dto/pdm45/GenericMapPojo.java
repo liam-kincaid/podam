@@ -14,7 +14,7 @@ public class GenericMapPojo<F, S> {
 
 	private Map<String, GenericPojo<F, S>> genericPojos;
 
-	private Map<String, List> genericRawLists = new HashMap<String, List>();
+	private Map<String, List<?>> genericRawLists = new HashMap<>();
 
 	/**
 	 * Map getter
@@ -36,7 +36,7 @@ public class GenericMapPojo<F, S> {
 	 * Map getter
 	 * @return the genericRawLists
 	 */
-	public Map<String, List> getGenericRawLists() {
+	public Map<String, List<?>> getGenericRawLists() {
 		return genericRawLists;
 	}
 

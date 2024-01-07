@@ -3,7 +3,7 @@
  */
 package uk.co.jemos.podam.test.dto;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 /**
  * POJO to test when Podam sets a boolean.

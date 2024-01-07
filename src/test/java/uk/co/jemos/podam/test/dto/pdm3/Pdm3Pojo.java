@@ -10,17 +10,17 @@ import java.util.List;
  */
 public class Pdm3Pojo {
 
-	private List<?> something;
+	private List<Object> something;
 
 	private List<? extends RuntimeException> descendants;
 
 	private List<? super NullPointerException> ancestors;
 
-	public List<?> getSomething() {
+	public List<Object> getSomething() {
 		return something;
 	}
 
-	public void setSomething(List<?> something) {
+	public void setSomething(List<Object> something) {
 		this.something = something;
 	}
 

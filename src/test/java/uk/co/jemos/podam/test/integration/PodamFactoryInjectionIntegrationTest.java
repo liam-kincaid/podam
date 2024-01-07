@@ -3,46 +3,40 @@
  */
 package uk.co.jemos.podam.test.integration;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import javax.annotation.Resource;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 import uk.co.jemos.podam.test.dto.SimplePojoToTestSetters;
+import uk.co.jemos.podam.test.unit.pdm3.Pdm3PojoUnitTest.TrackingExternalFactory;
 
 /**
  * @author mtedone
  * 
  */
-@ContextConfiguration(locations = {"classpath:podam-test-appContext.xml"})
-public class PodamFactoryInjectionIntegrationTest
-		extends
-			AbstractJUnit4SpringContextTests {
+public class PodamFactoryInjectionIntegrationTest {
 
 	// ------------------->> Constants
 
 	// ------------------->> Instance / Static variables
 
+	private static final TrackingExternalFactory trackingFactory = new TrackingExternalFactory();
+	
 	/** The Podam Factory */
-	@Resource
-	private PodamFactory factory;
+	private static final PodamFactory factory = new PodamFactoryImpl(trackingFactory);
 
 	// ------------------->> Constructors
 
 	// ------------------->> Public methods
 
-	@Before
+	@BeforeEach
 	public void init() {
-		assertThat("The PODAM factory cannot be null!",
-				factory, not(nullValue()));
-		assertThat("The factory strategy cannot be null!",
-				factory.getStrategy(), not(nullValue()));
+		assertNotNull(factory, "The PODAM factory cannot be null!");
+		assertNotNull(factory.getStrategy(), "The factory strategy cannot be null!");
 	}
 
 	@Test
@@ -50,13 +44,13 @@ public class PodamFactoryInjectionIntegrationTest
 
 		SimplePojoToTestSetters pojo = factory
 				.manufacturePojo(SimplePojoToTestSetters.class);
-		assertThat("The pojo cannot be null!", pojo, not(nullValue()));
+		assertNotNull(pojo, "The pojo cannot be null!");
 
 		int intField = pojo.getIntField();
-		assertThat("The int field cannot be zero!", intField, not(equalTo(0)));
+		assertNotEquals(0, intField, "The int field cannot be zero!");
 
 		String stringField = pojo.getStringField();
-		assertThat("The string field cannot be null!", stringField, not(nullValue()));
+		assertNotNull(stringField, "The string field cannot be null!");
 	}
 
 	// ------------------->> Getters / Setters

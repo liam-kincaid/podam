@@ -1,10 +1,9 @@
 package uk.co.jemos.podam.test.unit.features.constructors;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Title;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import net.serenitybdd.annotations.Title;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.test.dto.*;
@@ -12,18 +11,19 @@ import uk.co.jemos.podam.test.dto.InnerClassPojo.InnerPojo;
 import uk.co.jemos.podam.test.dto.issue123.GenericCollectionsConstructorPojo;
 import uk.co.jemos.podam.test.unit.AbstractPodamSteps;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
+import jakarta.xml.bind.JAXBElement;
 
+import javax.xml.namespace.QName;
 import java.util.Date;
 import java.util.Observable;
+import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 /**
  * @author daivanov
  *
  */
-@RunWith(SerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class ConstructorsUnitTest extends AbstractPodamSteps {
 
 
@@ -183,8 +183,8 @@ public class ConstructorsUnitTest extends AbstractPodamSteps {
 
 		PodamFactory podamFactory = podamFactorySteps.givenAStandardPodamFactory();
 
-		TimeZone pojo = podamInvocationSteps.whenIInvokeTheFactoryForClass(TimeZone.class, podamFactory);
-		podamValidationSteps.thePojoMustBeOfTheType(pojo, TimeZone.class);
+		TimeZone pojo = podamInvocationSteps.whenIInvokeTheFactoryForClass(SimpleTimeZone.class, podamFactory);
+		podamValidationSteps.thePojoMustBeOfTheType(pojo, SimpleTimeZone.class);
 	}
 
 	@Test

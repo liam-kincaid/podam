@@ -6,6 +6,8 @@ package uk.co.jemos.podam.common;
 import java.lang.annotation.Annotation;
 import java.time.*;
 import java.time.temporal.Temporal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import uk.co.jemos.podam.exceptions.PodamMockeryException;
@@ -17,7 +19,7 @@ import uk.co.jemos.podam.exceptions.PodamMockeryException;
  * @author liam
  * @since 8.0.1.RELEASE
  */
-public class PastStrategy implements AttributeStrategy<Temporal>, CommonTypeOrStrategy {
+public class PastStrategy implements AttributeStrategy<Object>, CommonTypeOrStrategy {
 
     /**
      * Constructor for the strategy
@@ -29,7 +31,7 @@ public class PastStrategy implements AttributeStrategy<Temporal>, CommonTypeOrSt
     /**
      * {@inheritDoc}
      */
-    public Temporal getValue(Class<?> attrType, List<Annotation> annotations) throws PodamMockeryException {
+    public Object getValue(Class<?> attrType, List<Annotation> annotations) throws PodamMockeryException {
 
     	AtomicReference<Long> seconds = new AtomicReference<>();
     	AtomicReference<Long> nanos = new AtomicReference<>();
@@ -68,17 +70,6 @@ public class PastStrategy implements AttributeStrategy<Temporal>, CommonTypeOrSt
 	        return OffsetTime.ofInstant(instant, getZoneId());
 		}
 
-		if (Year.class.isAssignableFrom(attrType)) {
-
-			AtomicReference<Integer> years = new AtomicReference<>();
-			AtomicReference<Integer> months = new AtomicReference<>();
-			AtomicReference<Integer> days = new AtomicReference<>();
-
-			getYearsMonthsDays(annotations, years, months, days);
-
-			return Year.of(years.get());
-		}
-
 		if (ZonedDateTime.class.isAssignableFrom(attrType)) {
 
 			return ZonedDateTime.ofInstant(instant, getZoneId());
@@ -98,6 +89,22 @@ public class PastStrategy implements AttributeStrategy<Temporal>, CommonTypeOrSt
 		if (YearMonth.class.isAssignableFrom(attrType)) {
 
 			return YearMonth.of(years.get(), months.get());
+		}
+
+		AtomicReference<Long> timestamps = new AtomicReference<>();
+
+		getTimestamps(annotations, timestamps);
+
+		if (Date.class.isAssignableFrom(attrType)) {
+
+			return new Date(timestamps.get());
+		}
+
+		if (Calendar.class.isAssignableFrom(attrType)) {
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(timestamps.get());
+			return calendar;
 		}
 
 		return null;

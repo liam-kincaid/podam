@@ -1,10 +1,6 @@
 package uk.co.jemos.podam.test.unit.steps;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-
-import net.thucydides.core.annotations.Step;
-import org.junit.Assert;
+import net.serenitybdd.annotations.Step;
 import uk.co.jemos.podam.api.DataProviderStrategy;
 import uk.co.jemos.podam.test.dto.OneDimensionalTestPojo;
 import uk.co.jemos.podam.test.utils.TypesUtils;
@@ -14,112 +10,83 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.junit.jupiter.api.Assertions.*;
+
 public class OneDimentionalPojoValidationSteps {
 
     @Step("Then OneDimensionalTestPojo should be valid")
     public void validateDimensionalTestPojo(OneDimensionalTestPojo pojo, DataProviderStrategy strategy) {
 
-        assertThat(
-                "The boolean object field should have a value of TRUE",
-                pojo.getBooleanObjectField(), equalTo(true));
-
-        assertThat("The boolean field should have a value of TRUE",
-                pojo.isBooleanField(), equalTo(true));
+        assertTrue(pojo.getBooleanObjectField(), "The boolean object field should have a value of TRUE");
+        assertTrue(pojo.isBooleanField(), "The boolean field should have a value of TRUE");
 
         byte byteField = pojo.getByteField();
-        assertThat("The byte field should not be zero",
-                byteField, not(equalTo((byte)0)));
+        assertNotEquals((byte) 0, byteField, "The byte field should not be zero");
 
         Byte byteObjectField = pojo.getByteObjectField();
-        assertThat("The Byte object field should not be zero",
-                byteObjectField, not(equalTo((byte)0)));
+        assertNotEquals((byte) 0, byteObjectField, "The Byte object field should not be zero");
 
         short shortField = pojo.getShortField();
-        assertThat("The short field should not be zero",
-                shortField, not(equalTo((short)0)));
+        assertNotEquals((short) 0, shortField, "The short field should not be zero");
 
         Short shortObjectField = pojo.getShortObjectField();
-        assertThat("The Short Object field should not be zero",
-                shortObjectField, not(equalTo((short)0)));
+        assertNotEquals((short) 0, shortObjectField, "The Short Object field should not be zero");
 
         char charField = pojo.getCharField();
-        assertThat("The char field should not be zero",
-                charField, not(equalTo((char)0)));
+        assertNotEquals((char) 0, charField, "The char field should not be zero");
         Character characterObjectField = pojo.getCharObjectField();
-        assertThat("The Character object field should not be zero",
-                characterObjectField,  not(equalTo((char)0)));
+        assertNotEquals((char) 0, characterObjectField, "The Character object field should not be zero");
 
         int intField = pojo.getIntField();
-        assertThat("The int field cannot be zero", intField, not(equalTo(0)));
+        assertNotEquals(0, intField, "The int field cannot be zero");
         Integer integerField = pojo.getIntObjectField();
-        assertThat("The Integer object field cannot be zero",
-                integerField, not(equalTo(0)));
+        assertNotEquals(0, integerField, "The Integer object field cannot be zero");
 
         long longField = pojo.getLongField();
-        assertThat("The long field cannot be zero",
-                longField, not(equalTo(0L)));
+        assertNotEquals(0L, longField, "The long field cannot be zero");
         Long longObjectField = pojo.getLongObjectField();
-        assertThat("The Long object field cannot be zero",
-                longObjectField, not(equalTo(0L)));
+        assertNotEquals(0L, longField, "The Long object field cannot be zero");
 
         float floatField = pojo.getFloatField();
-        assertThat("The float field cannot be zero",
-                floatField, not(equalTo(0.0f)));
+        assertNotEquals(0.0F, floatField, "The float field cannot be zero");
         Float floatObjectField = pojo.getFloatObjectField();
-        assertThat("The Float object field cannot be zero",
-                floatObjectField, not(equalTo(0.0f)));
+        assertNotEquals(0.0F, floatObjectField, "The Float object field cannot be zero");
 
         double doubleField = pojo.getDoubleField();
-        assertThat("The double field cannot be zero",
-                doubleField, not(equalTo(0.0d)));
+        assertNotEquals(0.0D, doubleField, "The double field cannot be zero");
         Double doubleObjectField = pojo.getDoubleObjectField();
-        assertThat("The Double object field cannot be zero",
-                doubleObjectField, not(equalTo(0.0d)));
+        assertNotEquals(0.0D, doubleObjectField, "The Double object field cannot be zero");
 
         String stringField = pojo.getStringField();
-        assertThat("The String field cannot be empty",
-                stringField, not(isEmptyOrNullString()));
+        assertFalse(isBlank(stringField), "The String field cannot be empty");
 
         Object objectField = pojo.getObjectField();
-        Assert.assertNotNull("The Object field cannot be null", objectField);
+        assertNotNull(objectField, "The Object field cannot be null");
 
         Calendar calendarField = pojo.getCalendarField();
         TypesUtils.checkCalendarIsValid(calendarField);
 
         Date dateField = pojo.getDateField();
-        Assert.assertNotNull("The date field is not valid", dateField);
+        assertNotNull(dateField, "The date field is not valid");
 
         Random[] randomArray = pojo.getRandomArray();
-        Assert.assertNotNull("The array of Random objects cannot be null!",
-                randomArray);
-        Assert.assertEquals("The array of Random length should be one!",
-                strategy.getNumberOfCollectionElements(Random.class),
-                randomArray.length);
+        assertNotNull(randomArray, "The array of Random objects cannot be null!");
+        assertEquals(strategy.getNumberOfCollectionElements(Random.class), randomArray.length, "The array of Random length should be one!");
         Random random = randomArray[0];
-        Assert.assertNotNull(
-                "The Random array element at [0] should not be null", random);
+        assertNotNull(random, "The Random array element at [0] should not be null");
 
         int[] intArray = pojo.getIntArray();
-        Assert.assertNotNull("The array of ints cannot be null!", intArray);
-        Assert.assertEquals(
-                "The array of ints length should be the same as defined in the strategy!",
-                strategy.getNumberOfCollectionElements(Integer.class),
-                intArray.length);
-        assertThat(
-                "The first element in the array of ints must be different from zero!",
-                intArray[0], not(equalTo(0)));
+        assertNotNull(intArray, "The array of ints cannot be null!");
+        assertEquals(strategy.getNumberOfCollectionElements(Integer.class), intArray.length, "The array of ints length should be the same as defined in the strategy!");
+        assertNotEquals(0, intArray[0], "The first element in the array of ints must be different from zero!");
 
         boolean[] booleanArray = pojo.getBooleanArray();
-        Assert.assertNotNull("The array of booleans cannot be null!",
-                booleanArray);
-        Assert.assertEquals(
-                "The array of boolean length should be the same as the one set in the strategy!",
-                strategy.getNumberOfCollectionElements(Boolean.class),
-                booleanArray.length);
+        assertNotNull(booleanArray, "The array of booleans cannot be null!");
+        assertEquals(strategy.getNumberOfCollectionElements(Boolean.class), booleanArray.length, "The array of boolean length should be the same as the one set in the strategy!");
 
         BigDecimal bigDecimalField = pojo.getBigDecimalField();
-        Assert.assertNotNull("The BigDecimal field cannot be null!",
-                bigDecimalField);
+        assertNotNull(bigDecimalField, "The BigDecimal field cannot be null!");
 
     }
 }

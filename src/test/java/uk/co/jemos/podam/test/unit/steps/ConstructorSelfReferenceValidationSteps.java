@@ -1,7 +1,10 @@
 package uk.co.jemos.podam.test.unit.steps;
 
-import net.thucydides.core.annotations.Step;
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import net.serenitybdd.annotations.Step;
 import uk.co.jemos.podam.test.dto.ConstructorWithSelfReferencesButNoDefaultConstructorPojo;
 import uk.co.jemos.podam.test.dto.ConstructorWithSelfReferencesPojoAndDefaultConstructor;
 
@@ -12,21 +15,21 @@ public class ConstructorSelfReferenceValidationSteps {
 
     @Step("Then the first self-reference for a POJO with default constructor should not be null")
     public void theFirstSelfReferenceForPojoWithDefaultConstructorShouldNotBeNull(ConstructorWithSelfReferencesPojoAndDefaultConstructor parentPojo) {
-        Assert.assertNotNull("The first self-reference should not be null", parentPojo.getParent());
+        assertNotNull(parentPojo.getParent(), "The first self-reference should not be null");
     }
 
     @Step("Then the second self-reference for a POJO with default constructor should not be null")
     public void theSecondSelfReferenceForPojoWithDefaultConstructorShouldNotBeNull(ConstructorWithSelfReferencesPojoAndDefaultConstructor parentPojo) {
-        Assert.assertNotNull("The second self-reference should not be null", parentPojo.getAnotherParent());
+        assertNotNull(parentPojo.getAnotherParent(), "The second self-reference should not be null");
     }
 
     @Step("Then the first self-reference for a POJO without default constructor should not be null")
     public void theFirstSelfReferenceForPojoWithoutDefaultConstructorShouldNotBeNull(ConstructorWithSelfReferencesButNoDefaultConstructorPojo parentPojo) {
-        Assert.assertNotNull("The first self-reference should not be null", parentPojo.getParent());
+        assertNotNull(parentPojo.getParent(), "The first self-reference should not be null");
     }
 
     @Step("Then the first self-reference for a POJO without default constructor should not be null")
     public void theSecondSelfReferenceForPojoWithoutDefaultConstructorShouldNotBeNull(ConstructorWithSelfReferencesButNoDefaultConstructorPojo parentPojo) {
-        Assert.assertNotNull("The seciond self-reference should not be null", parentPojo.getAnotherParent());
+        assertNotNull(parentPojo.getAnotherParent(), "The seciond self-reference should not be null");
     }
 }

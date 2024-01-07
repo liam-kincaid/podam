@@ -1,13 +1,14 @@
 package uk.co.jemos.podam.test.unit.features.basicTypes;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Set;
-
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Title;
-
-import org.junit.*;
-import org.junit.runner.RunWith;
-
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import net.serenitybdd.annotations.Title;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.co.jemos.podam.api.DefaultClassInfoStrategy;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -21,27 +22,28 @@ import uk.co.jemos.podam.test.unit.AbstractPodamSteps;
  * @author daivanov
  *
  */
-@RunWith(SerenityRunner.class)
+
+@ExtendWith(SerenityJUnit5Extension.class)
 public class BooleanUnitTest extends AbstractPodamSteps {
 
 	private final static String EXCLUDED_FIELD = "value4";
 	private final static DefaultClassInfoStrategy classInfoStrategy =
 			DefaultClassInfoStrategy.getInstance();
 
-	@BeforeClass
+	@BeforeAll
 	public static void init() {
 		classInfoStrategy.addExcludedAnnotation(TestExclude.class);
 		classInfoStrategy.addExcludedAnnotation(PodamExclude.class);
-		Assert.assertEquals("Unexpected number of exluded annotations",
-				2, classInfoStrategy.getExcludedAnnotations().size());
+		assertEquals(2, classInfoStrategy.getExcludedAnnotations().size(),
+				"Unexpected number of exluded annotations");
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void deinit() {
 		classInfoStrategy.removeExcludedField(BooleanPojo.class, EXCLUDED_FIELD);
 		classInfoStrategy.removeExcludedAnnotation(TestExclude.class);
-		Assert.assertEquals("Unexpected number of exluded annotations",
-				1, classInfoStrategy.getExcludedAnnotations().size());
+		assertEquals(1, classInfoStrategy.getExcludedAnnotations().size(),
+				"Unexpected number of exluded annotations");
 	}
 
 	@Test
@@ -73,5 +75,4 @@ public class BooleanUnitTest extends AbstractPodamSteps {
 		excludedFields = classInfoStrategy.getExcludedFields(BooleanPojo.class);
 		podamValidationSteps.theCollectionShouldBeEmpty(excludedFields);
 	}
-
 }

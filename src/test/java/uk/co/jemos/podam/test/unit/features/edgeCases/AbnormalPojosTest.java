@@ -1,10 +1,12 @@
 package uk.co.jemos.podam.test.unit.features.edgeCases;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Title;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import net.serenitybdd.annotations.Title;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.exceptions.PodamMockeryException;
 import uk.co.jemos.podam.test.dto.*;
@@ -13,27 +15,27 @@ import uk.co.jemos.podam.test.dto.pdm33.PrivateOnlyConstructorPojo;
 import uk.co.jemos.podam.test.dto.pdm33.ProtectedNonDefaultConstructorPojo;
 import uk.co.jemos.podam.test.unit.AbstractPodamSteps;
 
-import javax.activation.DataHandler;
+import jakarta.activation.DataHandler;
 import java.net.URL;
 
 /**
  * Created by tedonema on 31/05/2015.
  */
-@RunWith(SerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class AbnormalPojosTest extends AbstractPodamSteps {
 
     @Test
     @Title("Podam should generate a non null POJO for Abstract types with a concrete type")
     public void podamShouldGenerateANonNullPojoForAbstractTypesWithConcreteImplementation() throws Exception {
 
-        PodamFactory podamFactory = podamFactorySteps.givenAStandardPodamFactory();
-        podamStrategySteps.addOrReplaceSpecific(podamFactory, AbstractTestPojo.class, ConcreteTestPojo.class);
-        AbstractTestPojo pojo = podamInvocationSteps.whenIInvokeTheFactoryForClass(AbstractTestPojo.class, podamFactory);
-        podamValidationSteps.thePojoMustBeOfTheType(pojo, ConcreteTestPojo.class);
+		PodamFactory podamFactory = podamFactorySteps.givenAStandardPodamFactory();
+		podamStrategySteps.addOrReplaceSpecific(podamFactory, AbstractTestPojo.class, ConcreteTestPojo.class);
+		AbstractTestPojo pojo = podamInvocationSteps.whenIInvokeTheFactoryForClass(AbstractTestPojo.class, podamFactory);
+		podamValidationSteps.thePojoMustBeOfTheType(pojo, ConcreteTestPojo.class);
 
-        podamStrategySteps.removeSpecific(podamFactory, AbstractTestPojo.class);
-        AbstractTestPojo pojo2 = podamInvocationSteps.whenIInvokeTheFactoryForClass(AbstractTestPojo.class, podamFactory);
-        podamValidationSteps.thePojoShouldBeNull(pojo2);
+		podamStrategySteps.removeSpecific(podamFactory, AbstractTestPojo.class);
+		AbstractTestPojo pojo2 = podamInvocationSteps.whenIInvokeTheFactoryForClass(AbstractTestPojo.class, podamFactory);
+		podamValidationSteps.thePojoShouldBeNull(pojo2);
     }
 
     @Test
@@ -132,14 +134,15 @@ public class AbnormalPojosTest extends AbstractPodamSteps {
     }
 
 
-    @Test(expected=PodamMockeryException.class)
+    @Test
     @Title("Podam should throw an exception if a POJO contains invalid getters or setters")
     public void podamShouldThrowAnExceptionIfAPojoContainsInvalidGettersOrSetters() throws Exception {
 
-        PodamFactory podamFactory = podamFactorySteps.givenAStandardPodamFactory();
-        BadlyTypedPojo pojo = podamFactory.manufacturePojo(BadlyTypedPojo.class);
-        Assert.assertNotNull("Manufacturing failed", pojo);
-
+        Assertions.assertThrows(PodamMockeryException.class, () -> {
+            PodamFactory podamFactory = podamFactorySteps.givenAStandardPodamFactory();
+            BadlyTypedPojo pojo = podamFactory.manufacturePojo(BadlyTypedPojo.class);
+            assertNotNull(pojo, "Manufacturing failed");
+        });
     }
 
 
@@ -160,5 +163,4 @@ public class AbnormalPojosTest extends AbstractPodamSteps {
                 podamInvocationSteps.whenIInvokeTheFactoryForClass(NonInstantiatableClass.class, podamFactory);
         podamValidationSteps.theObjectShouldBeNull(innerClassPojo);
     }
-
 }

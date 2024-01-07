@@ -1,6 +1,6 @@
 package uk.co.jemos.podam.test.utils;
 
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -16,9 +16,8 @@ public abstract class TypesUtils {
      * @param calendarField The calendar instance to check
      */
     public static void checkCalendarIsValid(Calendar calendarField) {
-        Assert.assertNotNull("The Calendar field cannot be null", calendarField);
+        assertNotNull(calendarField, "The Calendar field cannot be null");
         Date calendarDate = calendarField.getTime();
-        Assert.assertNotNull("It appears the Calendar field is not valid",
-                calendarDate);
+        assertNotNull(calendarDate, "It appears the Calendar field is not valid");
     }
 }

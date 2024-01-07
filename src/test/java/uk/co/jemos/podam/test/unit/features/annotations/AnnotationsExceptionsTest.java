@@ -1,8 +1,9 @@
 package uk.co.jemos.podam.test.unit.features.annotations;
 
-import net.thucydides.core.annotations.Title;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import net.serenitybdd.annotations.Title;
+import org.junit.jupiter.api.Test;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 import uk.co.jemos.podam.exceptions.PodamMockeryException;
@@ -17,55 +18,66 @@ public class AnnotationsExceptionsTest {
 
     //TODO Can't serenify until issue #79 has been resolved
 
-    @Before
+    @BeforeEach
     public void init() {
         podamFactory = new PodamFactoryImpl();
     }
 
-    @Test(expected = PodamMockeryException.class)
+    @Test
     public void podamShouldThrowExceptionWhenPodamIntegerValueContainsInvalidCharacters() throws Exception {
-
-        podamFactory.manufacturePojo(IntegerValueWithErrorPojo.class);
+        Assertions.assertThrows(PodamMockeryException.class, () -> {
+            podamFactory.manufacturePojo(IntegerValueWithErrorPojo.class);
+        });
     }
 
-    @Test(expected = PodamMockeryException.class)
+    @Test
     @Title("Podam should throw an exception if the @PodamLongValue annotation contains invalid characters")
     public void podamShouldThrowExceptionWhenPodamLongValueContainsInvalidCharacters() throws Exception {
-        podamFactory.manufacturePojo(LongValueWithErrorPojo.class);
+        Assertions.assertThrows(PodamMockeryException.class, () -> {
+            podamFactory.manufacturePojo(LongValueWithErrorPojo.class);
+        });
     }
 
 
-    @Test(expected = PodamMockeryException.class)
+    @Test
     @Title("Podam should throw an exception if the @PodamByteValue annotation contains invalid characters")
     public void podamShouldThrowExceptionWhenPodamByteValueContainsInvalidCharacters() throws Exception {
-        podamFactory.manufacturePojo(ByteValueWithErrorPojo.class);
-
+        Assertions.assertThrows(PodamMockeryException.class, () -> {
+            podamFactory.manufacturePojo(ByteValueWithErrorPojo.class);
+        });
     }
 
-    @Test(expected = PodamMockeryException.class)
+    @Test
     @Title("Podam should throw an exception if the @PodamShortValue annotation contains invalid characters")
     public void podamShouldThrowExceptionWhenPodamShortValueContainsInvalidCharacters() throws Exception {
-        podamFactory.manufacturePojo(ShortValueWithErrorPojo.class);
+        Assertions.assertThrows(PodamMockeryException.class, () -> {
+            podamFactory.manufacturePojo(ShortValueWithErrorPojo.class);
+        });
     }
 
-    @Test(expected = PodamMockeryException.class)
+    @Test
     @Title("Podam should throw an exception if the @PodamFloatValue annotation contains invalid characters")
     public void podamShouldThrowExceptionWhenPodamFloatValueContainsInvalidCharacters() throws Exception {
-        podamFactory.manufacturePojo(FloatValueWithErrorPojo.class);
+        Assertions.assertThrows(PodamMockeryException.class, () -> {
+            podamFactory.manufacturePojo(FloatValueWithErrorPojo.class);
+        });
     }
 
 
 
-    @Test(expected = PodamMockeryException.class)
+    @Test
     @Title("Podam should throw an exception if the @PodamDoubleValue annotation contains invalid characters")
     public void podamShouldThrowExceptionWhenPodamDoubleValueContainsInvalidCharacters() throws Exception {
-        podamFactory.manufacturePojo(DoubleValueWithErrorPojo.class);
+        Assertions.assertThrows(PodamMockeryException.class, () -> {
+            podamFactory.manufacturePojo(DoubleValueWithErrorPojo.class);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     @Title("Podam should throw an exception if the @PodamStrategyValue annotation contains the wrong strateg type")
     public void podamShouldThrowExceptionWhenPodamStrategyValueContainsInvalidStrategy() throws Exception {
-        podamFactory.manufacturePojo(StringWithWrongStrategyTypePojo.class);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            podamFactory.manufacturePojo(StringWithWrongStrategyTypePojo.class);
+        });
     }
-
 }

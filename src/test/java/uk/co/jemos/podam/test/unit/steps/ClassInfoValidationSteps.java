@@ -1,11 +1,9 @@
 package uk.co.jemos.podam.test.unit.steps;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import net.thucydides.core.annotations.Step;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Assert;
-
+import net.serenitybdd.annotations.Step;
 import uk.co.jemos.podam.api.ClassAttribute;
 
 import java.util.HashSet;
@@ -23,14 +21,12 @@ public class ClassInfoValidationSteps {
         Set<String> missingAttribs = new HashSet<String>(attribs);
         for (ClassAttribute attribute : classAttributes) {
             String attrName = attribute.getName();
-            assertThat("Unexpected attribute", attrName, isIn(missingAttribs));
+            assertTrue(missingAttribs.contains(attrName), "Unexpected attribute");
             missingAttribs.remove(attrName);
-            Assert.assertEquals("Wrong number of getters for " + attribute.getName(),
-                    1, attribute.getGetters().size());
-            Assert.assertEquals("Wrong number of setters for " + attribute.getName(),
-                    1, attribute.getSetters().size());
+            assertEquals(1, attribute.getGetters().size(), "Wrong number of getters for " + attribute.getName());
+            assertEquals(1, attribute.getSetters().size(), "Wrong number of setters for " + attribute.getName());
         }
-        assertThat("Missing attributes", missingAttribs, is(empty()));
+        assertTrue(missingAttribs.isEmpty(), "Missing attributes");
     }
 
 }

@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * POJO to test bean validation API 2.0
+ * POJO to test bean validation API 3.0
  *
  * @author daivanov
  *

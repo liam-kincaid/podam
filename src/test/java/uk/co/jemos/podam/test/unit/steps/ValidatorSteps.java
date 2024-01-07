@@ -1,12 +1,11 @@
 package uk.co.jemos.podam.test.unit.steps;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-
-import net.thucydides.core.annotations.Step;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+import net.serenitybdd.annotations.Step;
+
 import java.util.Set;
 
 /**
@@ -18,8 +17,6 @@ public class ValidatorSteps {
     public <T> void thePojoShouldNotViolateAnyValidations(Validator validator, T pojo) throws Exception {
 
         Set<ConstraintViolation<T>> violations = validator.validate(pojo);
-        assertThat("There should be no violations",
-                violations, is(empty()));
+        assertTrue(violations.isEmpty(), "There should be no violations");
     }
-
 }

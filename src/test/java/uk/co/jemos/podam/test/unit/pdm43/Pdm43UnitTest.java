@@ -3,8 +3,9 @@
  */
 package uk.co.jemos.podam.test.unit.pdm43;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Test;
 
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -24,7 +25,7 @@ public class Pdm43UnitTest {
 		PodamFactory podamFactory = new PodamFactoryImpl();
 		ConcreteBusinessObject pojo = podamFactory
 				.manufacturePojo(ConcreteBusinessObject.class);
-		Assert.assertNotNull("The created POJO cannot be null!", pojo);
+		assertNotNull(pojo, "The created POJO cannot be null!");
 
 	}
 

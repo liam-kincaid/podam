@@ -1,11 +1,11 @@
 package uk.co.jemos.podam.test.unit.features.validatorFramework;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Title;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import net.serenitybdd.annotations.Title;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.hibernate.validator.constraints.Email;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import uk.co.jemos.podam.api.AttributeMetadata;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.common.AttributeStrategy;
@@ -20,7 +20,6 @@ import uk.co.jemos.podam.test.strategies.AnnotationStrategy;
 import uk.co.jemos.podam.test.strategies.PatternStrategy;
 import uk.co.jemos.podam.test.unit.AbstractPodamSteps;
 import uk.co.jemos.podam.typeManufacturers.StringTypeManufacturerImpl;
-import uk.co.jemos.podam.typeManufacturers.TypeManufacturer;
 
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.Pattern;
@@ -34,7 +33,7 @@ import java.util.List;
  *
  * @author daivanov
  */
-@RunWith(SerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class ValidatedPojoTest extends AbstractPodamSteps {
 
 	private static class TrackingStringTypeManufacturerImpl extends StringTypeManufacturerImpl {
@@ -51,7 +50,7 @@ public class ValidatedPojoTest extends AbstractPodamSteps {
 	private static TrackingStringTypeManufacturerImpl stringTypeManufacturer = new TrackingStringTypeManufacturerImpl();
 
 	@Test
-	@Title("Podam should be able to fulfill most of the javax Validation framework")
+	@Title("Podam should be able to fulfill most of the jakarta Validation framework")
 	public void podamShouldFulfillMostOfTheJavaxValidationFramework() throws Exception {
 
 		AttributeStrategy<?> strategy = new EmailStrategy();
@@ -95,7 +94,7 @@ public class ValidatedPojoTest extends AbstractPodamSteps {
 	}
 
 	@Test
-	@Title("Podam should be able to fulfill most of the javax Validation 2.0 framework")
+	@Title("Podam should be able to fulfill most of the jakarta Validation 3.0 framework")
 	public void podamShouldFulfillMostOfTheJavaxValidation20Framework() throws Exception {
 
 		PodamFactory podamFactory = podamFactorySteps.givenAStandardPodamFactory();

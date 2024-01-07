@@ -1,10 +1,18 @@
 package uk.co.jemos.podam.test.unit.features.annotations;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Title;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import jakarta.persistence.Basic;
+import java.lang.annotation.Annotation;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import net.serenitybdd.annotations.Title;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.test.dto.ConstructorWithSelfReferencesPojoAndDefaultConstructor;
 import uk.co.jemos.podam.test.dto.ExcludeAnnotationPojo;
@@ -18,22 +26,12 @@ import uk.co.jemos.podam.test.unit.AbstractPodamSteps;
 import uk.co.jemos.podam.test.utils.PodamTestConstants;
 import uk.co.jemos.podam.test.utils.PodamTestUtils;
 
-import jakarta.validation.constraints.Email;
-
-import java.lang.annotation.Annotation;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.Basic;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by tedonema on 31/05/2015.
  */
-@RunWith(SerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class AnnotationsTest extends AbstractPodamSteps {
 
 
@@ -99,7 +97,7 @@ public class AnnotationsTest extends AbstractPodamSteps {
         podamValidationSteps.thePojoMustBeOfTheType(pojo.getIntegerObjectFieldWithMinAndMaxValue(), Integer.class);
         maxValue = PodamTestConstants.NUMBER_INT_MAX_VALUE;
         podamValidationSteps.theIntFieldShouldHaveValueBetween(minValue, maxValue, pojo.getIntegerObjectFieldWithMinAndMaxValue());
-        int preciseValue = Integer.valueOf(PodamTestConstants.INTEGER_PRECISE_VALUE);
+        int preciseValue = Integer.parseInt(PodamTestConstants.INTEGER_PRECISE_VALUE);
         podamValidationSteps.theIntFieldShouldHaveThePreciseValueOf(pojo.getIntFieldWithPreciseValue(), preciseValue);
         podamValidationSteps.thePojoMustBeOfTheType(pojo.getIntegerObjectFieldWithPreciseValue(), Integer.class);
         podamValidationSteps.theIntFieldShouldHaveThePreciseValueOf(pojo.getIntegerObjectFieldWithPreciseValue(), preciseValue);
@@ -127,7 +125,7 @@ public class AnnotationsTest extends AbstractPodamSteps {
         podamValidationSteps.thePojoMustBeOfTheType(pojo.getLongObjectFieldWithMinAndMaxValue(), Long.class);
         maxValue = PodamTestConstants.NUMBER_INT_MAX_VALUE;
         podamValidationSteps.theLongFieldShouldHaveValueBetween(minValue, maxValue, pojo.getLongObjectFieldWithMinAndMaxValue());
-        long preciseValue = Long.valueOf(PodamTestConstants.LONG_PRECISE_VALUE);
+        long preciseValue = Long.parseLong(PodamTestConstants.LONG_PRECISE_VALUE);
         podamValidationSteps.theLongFieldShouldHaveThePreciseValueOf(pojo.getLongFieldWithPreciseValue(), preciseValue);
         podamValidationSteps.thePojoMustBeOfTheType(pojo.getLongObjectFieldWithPreciseValue(), Long.class);
         podamValidationSteps.theLongFieldShouldHaveThePreciseValueOf(pojo.getLongObjectFieldWithPreciseValue(), preciseValue);
@@ -175,7 +173,7 @@ public class AnnotationsTest extends AbstractPodamSteps {
                 PodamTestConstants.NUMBER_INT_ONE_HUNDRED);
         byte byteFieldWithPreciseValue = pojo.getByteFieldWithPreciseValue();
         podamValidationSteps.theByteValueShouldHavePreciselyValueOf(byteFieldWithPreciseValue,
-                Byte.valueOf(PodamTestConstants.BYTE_PRECISE_VALUE));
+                Byte.parseByte(PodamTestConstants.BYTE_PRECISE_VALUE));
 
     }
 
@@ -223,7 +221,7 @@ public class AnnotationsTest extends AbstractPodamSteps {
 
         short shortFieldWithPreciseValue = pojo.getShortFieldWithPreciseValue();
         podamValidationSteps.theShortPreciseValueShouldBe(shortFieldWithPreciseValue,
-                Short.valueOf(PodamTestConstants.SHORT_PRECISE_VALUE));
+                Short.parseShort(PodamTestConstants.SHORT_PRECISE_VALUE));
 
     }
 
@@ -311,7 +309,7 @@ public class AnnotationsTest extends AbstractPodamSteps {
         PodamFactory podamFactory = podamFactorySteps.givenAStandardPodamFactory();
         FloatValuePojo pojo = podamInvocationSteps.whenIInvokeTheFactoryForClass(FloatValuePojo.class, podamFactory);
 
-        Assert.assertNotNull("The pojo cannot be null!", pojo);
+        assertNotNull(pojo, "The pojo cannot be null!");
         podamValidationSteps.theObjectShouldNotBeNull(pojo);
 
         float floatFieldWithMinValueOnly = pojo.getFloatFieldWithMinValueOnly();
@@ -349,13 +347,13 @@ public class AnnotationsTest extends AbstractPodamSteps {
 
         float floatFieldWithPreciseValue = pojo.getFloatFieldWithPreciseValue();
         podamValidationSteps.theFloatValueShouldBePrecisely(floatFieldWithPreciseValue,
-                Float.valueOf(PodamTestConstants.FLOAT_PRECISE_VALUE));
+                Float.parseFloat(PodamTestConstants.FLOAT_PRECISE_VALUE));
 
         Float floatObjectFieldWithPreciseValue = pojo
                 .getFloatObjectFieldWithPreciseValue();
         podamValidationSteps.theObjectShouldNotBeNull(floatObjectFieldWithPreciseValue);
         podamValidationSteps.theFloatValueShouldBePrecisely(floatObjectFieldWithPreciseValue,
-                Float.valueOf(PodamTestConstants.FLOAT_PRECISE_VALUE));
+                Float.parseFloat(PodamTestConstants.FLOAT_PRECISE_VALUE));
 
     }
 
@@ -386,19 +384,17 @@ public class AnnotationsTest extends AbstractPodamSteps {
         double doubleFieldWithPreciseValue = pojo
                 .getDoubleFieldWithPreciseValue();
         podamValidationSteps.theDoubleValueShouldBeExactly(doubleFieldWithPreciseValue,
-                Double.valueOf(PodamTestConstants.DOUBLE_PRECISE_VALUE));
+                Double.parseDouble(PodamTestConstants.DOUBLE_PRECISE_VALUE));
 
         Double doubleObjectFieldWithPreciseValue = pojo
                 .getDoubleObjectFieldWithPreciseValue();
         podamValidationSteps.theObjectShouldNotBeNull(doubleObjectFieldWithPreciseValue);
-        Assert.assertTrue(
-                "The double object field with precise value should have a value of: "
-                        + PodamTestConstants.DOUBLE_PRECISE_VALUE,
-                doubleObjectFieldWithPreciseValue.doubleValue() == Double
-                        .valueOf(PodamTestConstants.DOUBLE_PRECISE_VALUE)
-                        .doubleValue());
+        assertEquals(doubleObjectFieldWithPreciseValue.doubleValue(), Double
+                .valueOf(PodamTestConstants.DOUBLE_PRECISE_VALUE)
+                .doubleValue(), "The double object field with precise value should have a value of: "
+                + PodamTestConstants.DOUBLE_PRECISE_VALUE);
         podamValidationSteps.theDoubleValueShouldBeExactly(doubleObjectFieldWithPreciseValue,
-                Double.valueOf(PodamTestConstants.DOUBLE_PRECISE_VALUE));
+                Double.parseDouble(PodamTestConstants.DOUBLE_PRECISE_VALUE));
 
     }
 

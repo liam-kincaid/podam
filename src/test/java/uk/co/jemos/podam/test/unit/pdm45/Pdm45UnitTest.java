@@ -3,13 +3,12 @@
  */
 package uk.co.jemos.podam.test.unit.pdm45;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 import uk.co.jemos.podam.api.RandomDataProviderStrategyImpl;
@@ -37,7 +36,7 @@ public class Pdm45UnitTest {
 	/** The podam factory */
 	private PodamFactory factory;
 
-	@Before
+	@BeforeEach
 	public void init() {
 
 		factory = new PodamFactoryImpl(new RandomDataProviderStrategyImpl());
@@ -48,7 +47,7 @@ public class Pdm45UnitTest {
 	public void testGenericListPojoManufacture() {
 		@SuppressWarnings("unchecked")
 		final GenericListPojo<Double, Boolean> pojo = factory.manufacturePojo(GenericListPojo.class, Double.class, Boolean.class);
-		Assert.assertNotNull("The GenericPojo object cannot be null!", pojo);
+		assertNotNull(pojo, "The GenericPojo object cannot be null!");
 
 		List<GenericPojo<Double, Boolean>> pojos = pojo.getGenericPojos();
 		for (GenericPojo<Double, Boolean> element : pojos) {
@@ -60,21 +59,21 @@ public class Pdm45UnitTest {
 	public void testGenericMapPojoManufacture() {
 		@SuppressWarnings("unchecked")
 		final GenericMapPojo<Double, Boolean> pojo = factory.manufacturePojo(GenericMapPojo.class, Double.class, Boolean.class);
-		Assert.assertNotNull("The GenericPojo object cannot be null!", pojo);
+		assertNotNull(pojo, "The GenericPojo object cannot be null!");
 
 		Map<String,GenericPojo<Double, Boolean>> pojos = pojo.getGenericPojos();
 		for (GenericPojo<Double, Boolean> element : pojos.values()) {
 			validateGenericPojo(element, Double.class, Boolean.class);
 		}
 
-		Map<String, List> rawLists = pojo.getGenericRawLists();
-		for (Entry<String, List> entry : rawLists.entrySet()) {
+		Map<String, List<?>> rawLists = pojo.getGenericRawLists();
+		for (Entry<String, List<?>> entry : rawLists.entrySet()) {
 			String key = entry.getKey();
-			Assert.assertNotNull("Map key cannot be null", key);
-			List list = entry.getValue();
-			Assert.assertNotNull("Map value cannot be null", list);
+			assertNotNull(key, "Map key cannot be null");
+			List<?> list = entry.getValue();
+			assertNotNull(list, "Map value cannot be null");
 			for (Object item : list) {
-				Assert.assertNotNull("List element cannot be null", item);
+				assertNotNull(item, "List element cannot be null");
 			}
 		}
 	}
@@ -83,7 +82,7 @@ public class Pdm45UnitTest {
 	public void testGenericArrayPojoManufacture() {
 		@SuppressWarnings("unchecked")
 		final GenericArrayPojo<Double, Boolean> pojo = factory.manufacturePojo(GenericArrayPojo.class, Double.class, Boolean.class);
-		Assert.assertNotNull("The GenericPojo object cannot be null!", pojo);
+		assertNotNull(pojo, "The GenericPojo object cannot be null!");
 
 		GenericPojo<Double, Boolean>[] pojos = pojo.getGenericPojos();
 		for (GenericPojo<Double, Boolean> element : pojos) {
@@ -94,7 +93,7 @@ public class Pdm45UnitTest {
 	@Test
 	public void testPojoWithGenericFields() {
 		final GenericAttributePojo pojo = factory.manufacturePojo(GenericAttributePojo.class);
-		Assert.assertNotNull("The GenericPojo object cannot be null!", pojo);
+		assertNotNull(pojo, "The GenericPojo object cannot be null!");
 
 		final GenericPojo<String, Long> genericPojo = pojo.getGenericPojo();
 		validateGenericPojo(genericPojo, String.class, Long.class);
@@ -109,21 +108,19 @@ public class Pdm45UnitTest {
 
 	private void validateGenericPojo(GenericPojo<?,?> pojo, Class<?> typeParam1, Class<?> typeParam2) {
 
-		Assert.assertNotNull("The GenericPojo object cannot be null!", pojo);
+		assertNotNull(pojo, "The GenericPojo object cannot be null!");
 		
-		Assert.assertNotNull("The generated object cannot be null!", pojo.getFirstValue());
-		Assert.assertEquals("The generated object must be a Double!", typeParam1, pojo.getFirstValue().getClass());
-		Assert.assertNotNull("The generated object cannot be null!", pojo.getSecondValue());
-		Assert.assertEquals("The generated object must be a Boolean!", typeParam2, pojo.getSecondValue().getClass());
-		Assert.assertNotNull("The generated list cannot be null!", pojo.getFirstList());
-		Assert.assertEquals("The generated list type must be of Double!", typeParam1, pojo.getFirstList().get(0).getClass());
-		Assert.assertNotNull("The generated array cannot be null!", pojo.getSecondArray());
-		Assert.assertEquals("The generated array type must be of Boolean!", typeParam2, pojo.getSecondArray()[0].getClass());
-		Assert.assertNotNull("The generated map cannot be null!", pojo.getFirstSecondMap());
-		Assert.assertEquals("The generated map key type must be of Double!", typeParam1,
-				pojo.getFirstSecondMap().entrySet().iterator().next().getKey().getClass());
-		Assert.assertEquals("The generated map value type must be of Boolean!", typeParam2,
-				pojo.getFirstSecondMap().entrySet().iterator().next().getValue().getClass());
+		assertNotNull(pojo.getFirstValue(), "The generated object cannot be null!");
+		assertEquals(typeParam1, pojo.getFirstValue().getClass(), "The generated object must be a Double!");
+		assertNotNull(pojo.getSecondValue(), "The generated object cannot be null!");
+		assertEquals(typeParam2, pojo.getSecondValue().getClass(), "The generated object must be a Boolean!");
+		assertNotNull(pojo.getFirstList(), "The generated list cannot be null!");
+		assertEquals(typeParam1, pojo.getFirstList().get(0).getClass(), "The generated list type must be of Double!");
+		assertNotNull(pojo.getSecondArray(), "The generated array cannot be null!");
+		assertEquals(typeParam2, pojo.getSecondArray()[0].getClass(), "The generated array type must be of Boolean!");
+		assertNotNull(pojo.getFirstSecondMap(), "The generated map cannot be null!");
+		assertEquals(typeParam1, pojo.getFirstSecondMap().entrySet().iterator().next().getKey().getClass(), "The generated map key type must be of Double!");
+		assertEquals(typeParam2, pojo.getFirstSecondMap().entrySet().iterator().next().getValue().getClass(), "The generated map value type must be of Boolean!");
 	}
 
 	@Test
@@ -151,13 +148,13 @@ public class Pdm45UnitTest {
 		@SuppressWarnings("unchecked")
 		GenericPojo<GenericPojo<String, Long>, Map<Integer, String>> pojo =
 				factory.manufacturePojo(GenericPojo.class, paremetrizedGenericPojo, paremetrizedMap);
-		assertThat("The pojo must be of the type", pojo, instanceOf(GenericPojo.class));
-		assertThat("Value must of the type", pojo.getFirstValue(), instanceOf(GenericPojo.class));
-		assertThat("Value must of the type", pojo.getFirstValue().getFirstValue(), instanceOf(String.class));
-		assertThat("Value must of the type", pojo.getFirstValue().getSecondValue(), instanceOf(Long.class));
-		assertThat("Value must of the type", pojo.getSecondValue(), instanceOf(Map.class));
-		assertThat("Value must of the type", pojo.getSecondValue().keySet().iterator().next(), instanceOf(Integer.class));
-		assertThat("Value must of the type", pojo.getSecondValue().values().iterator().next(), instanceOf(String.class));
+		assertInstanceOf(GenericPojo.class, pojo, "The pojo must be of the type");
+		assertInstanceOf(GenericPojo.class, pojo.getFirstValue(), "Value must of the type");
+		assertInstanceOf(String.class, pojo.getFirstValue().getFirstValue(), "Value must of the type");
+		assertInstanceOf(Long.class, pojo.getFirstValue().getSecondValue(), "Value must of the type");
+		assertInstanceOf(Map.class, pojo.getSecondValue(), "Value must of the type");
+		assertInstanceOf(Integer.class, pojo.getSecondValue().keySet().iterator().next(), "Value must of the type");
+		assertInstanceOf(String.class, pojo.getSecondValue().values().iterator().next(), "Value must of the type");
 	}
 
 	@Test
@@ -173,31 +170,22 @@ public class Pdm45UnitTest {
 		final GenericPojo<List<List<String>>, Map<Long, Double>> pojo =
 				factory.manufacturePojo(GenericPojo.class, twoDimensionalStringListType, longDoubleMapType);
 		
-		Assert.assertNotNull("The GenericPojo object cannot be null!", pojo);
+		assertNotNull(pojo, "The GenericPojo object cannot be null!");
 		
-		Assert.assertNotNull("The generated object cannot be null!", pojo.getFirstValue());
-		Assert.assertEquals("The generated object must be a String!", String.class,
-				pojo.getFirstValue().get(0).get(0).getClass());
-		Assert.assertNotNull("The generated object cannot be null!", pojo.getSecondValue());
-		Assert.assertEquals("The generated object must be a Long!", Long.class,
-				pojo.getSecondValue().keySet().iterator().next().getClass());
-		Assert.assertEquals("The generated object must be a Double!", Double.class,
-				pojo.getSecondValue().values().iterator().next().getClass());
-		Assert.assertNotNull("The generated list cannot be null!", pojo.getFirstList());
-		Assert.assertEquals("The generated list type must be of String!", String.class,
-				pojo.getFirstList().get(0).get(0).get(0).getClass());
-		Assert.assertNotNull("The generated array cannot be null!", pojo.getSecondArray());
-		Assert.assertEquals("The generated array type must be of Long!", Long.class,
-				pojo.getSecondArray()[0].keySet().iterator().next().getClass());
-		Assert.assertEquals("The generated array type must be of Double!", Double.class,
-				pojo.getSecondArray()[0].values().iterator().next().getClass());
-		Assert.assertNotNull("The generated map cannot be null!", pojo.getFirstSecondMap());
-		Assert.assertEquals("The generated map key type must be of String!", String.class,
-				pojo.getFirstSecondMap().entrySet().iterator().next().getKey().get(0).get(0).getClass());
-		Assert.assertEquals("The generated map value type must be of Long!", Long.class,
-				pojo.getFirstSecondMap().entrySet().iterator().next().getValue().keySet().iterator().next().getClass());
-		Assert.assertEquals("The generated map value type must be of Double!", Double.class,
-				pojo.getFirstSecondMap().entrySet().iterator().next().getValue().values().iterator().next().getClass());
+		assertNotNull(pojo.getFirstValue(), "The generated object cannot be null!");
+		assertEquals(String.class, pojo.getFirstValue().get(0).get(0).getClass(), "The generated object must be a String!");
+		assertNotNull(pojo.getSecondValue(), "The generated object cannot be null!");
+		assertEquals(Long.class, pojo.getSecondValue().keySet().iterator().next().getClass(), "The generated object must be a Long!");
+		assertEquals(Double.class, pojo.getSecondValue().values().iterator().next().getClass(), "The generated object must be a Double!");
+		assertNotNull(pojo.getFirstList(), "The generated list cannot be null!");
+		assertEquals(String.class, pojo.getFirstList().get(0).get(0).get(0).getClass(), "The generated list type must be of String!");
+		assertNotNull(pojo.getSecondArray(), "The generated array cannot be null!");
+		assertEquals(Long.class, pojo.getSecondArray()[0].keySet().iterator().next().getClass(), "The generated array type must be of Long!");
+		assertEquals(Double.class, pojo.getSecondArray()[0].values().iterator().next().getClass(), "The generated array type must be of Double!");
+		assertNotNull(pojo.getFirstSecondMap(), "The generated map cannot be null!");
+		assertEquals(String.class, pojo.getFirstSecondMap().entrySet().iterator().next().getKey().get(0).get(0).getClass(), "The generated map key type must be of String!");
+		assertEquals(Long.class, pojo.getFirstSecondMap().entrySet().iterator().next().getValue().keySet().iterator().next().getClass(), "The generated map value type must be of Long!");
+		assertEquals(Double.class, pojo.getFirstSecondMap().entrySet().iterator().next().getValue().values().iterator().next().getClass(), "The generated map value type must be of Double!");
 	}
 
 	/**
@@ -206,31 +194,30 @@ public class Pdm45UnitTest {
 	 * @param pojo the pojo to validate
 	 */
 	private void checkMultiDimensionalPojo(final MultiDimensionalTestPojo pojo) {
-		Assert.assertNotNull("The GenericPojo object cannot be null!", pojo);
+		assertNotNull(pojo, "The GenericPojo object cannot be null!");
 		
 		checkMultiDimensionalCollection(pojo.getThreeDimensionalList(), String.class);
 		checkMultiDimensionalCollection(pojo.getThreeDimensionalQueue(), Date.class);
 		checkMultiDimensionalCollection(pojo.getThreeDimensionalSet(), Double.class);
 		checkMultiDimensionalCollection(pojo.getThreeDimensionalCollection(), Long.class);
 		
-		Assert.assertEquals("The generated Array must have size=2!", 2, pojo.getThreeDimensionalArray().length);
-		Assert.assertEquals("The generated Array must have size=2!", 2, pojo.getThreeDimensionalArray()[0].length);
-		Assert.assertEquals("The generated Array must have size=2!", 2, pojo.getThreeDimensionalArray()[0][0].length);
-		Assert.assertEquals("The generated Array must be of String!", String.class,
-				pojo.getThreeDimensionalArray()[0][0][0].getClass());
+		assertEquals(2, pojo.getThreeDimensionalArray().length, "The generated Array must have size=2!");
+		assertEquals(2, pojo.getThreeDimensionalArray()[0].length, "The generated Array must have size=2!");
+		assertEquals(2, pojo.getThreeDimensionalArray()[0][0].length, "The generated Array must have size=2!");
+		assertEquals(String.class, pojo.getThreeDimensionalArray()[0][0][0].getClass(), "The generated Array must be of String!");
 		
 		// Boolean key is always true, so just have one element
-		Assert.assertEquals("The generated Map must have size=1!", 1, pojo.getThreeDimensionalMap().size());
+		assertEquals(1, pojo.getThreeDimensionalMap().size(), "The generated Map must have size=1!");
 		Entry<Boolean, Map<Float, Map<Integer, Calendar>>> entry =
 				pojo.getThreeDimensionalMap().entrySet().iterator().next();
-		Assert.assertEquals("The generated Map entry key must be of Boolean!", Boolean.class, entry.getKey().getClass());
-		Assert.assertEquals("The generated Map must have size=2!", 2, entry.getValue().size());
+		assertEquals(Boolean.class, entry.getKey().getClass(), "The generated Map entry key must be of Boolean!");
+		assertEquals(2, entry.getValue().size(), "The generated Map must have size=2!");
 		Entry<Float, Map<Integer, Calendar>> entry2 = entry.getValue().entrySet().iterator().next();
-		Assert.assertEquals("The generated Map entry key must be of Float!", Float.class, entry2.getKey().getClass());
-		Assert.assertEquals("The generated Map must have size=2!", 2, entry2.getValue().size());
+		assertEquals(Float.class, entry2.getKey().getClass(), "The generated Map entry key must be of Float!");
+		assertEquals(2, entry2.getValue().size(), "The generated Map must have size=2!");
 		Entry<Integer, Calendar> entry3 = entry2.getValue().entrySet().iterator().next();
-		Assert.assertEquals("The generated Map entry key must be of Integer!", Integer.class, entry3.getKey().getClass());
-		Assert.assertEquals("The generated Map entry key must be of Calendar!", GregorianCalendar.class, entry3.getValue().getClass());
+		assertEquals(Integer.class, entry3.getKey().getClass(), "The generated Map entry key must be of Integer!");
+		assertEquals(GregorianCalendar.class, entry3.getValue().getClass(), "The generated Map entry key must be of Calendar!");
 	}
 
 	/**
@@ -242,13 +229,13 @@ public class Pdm45UnitTest {
      */
 	@SuppressWarnings("unchecked")
 	private <T> void checkMultiDimensionalCollection(final Collection<?> collection, Class<T> type) {
-		Assert.assertEquals("The generated List must have size=2!", 2, collection.size());
+		assertEquals(2, collection.size(), "The generated List must have size=2!");
 		Collection<?> subcollection = (Collection<?>)collection.iterator().next();
-		Assert.assertEquals("The generated List must have size=2!", 2, subcollection.size());
+		assertEquals(2, subcollection.size(), "The generated List must have size=2!");
 		subcollection = (Collection<?>)subcollection.iterator().next();
-		Assert.assertEquals("The generated List must have size=2!", 2, subcollection.size());
+		assertEquals(2, subcollection.size(), "The generated List must have size=2!");
 		T element = (T) subcollection.iterator().next();
-		Assert.assertEquals("The generated List must be of " + type + "!", type, element.getClass());
+		assertEquals(type, element.getClass(), "The generated List must be of " + type + "!");
 	}
 
 }

@@ -1,6 +1,6 @@
 package uk.co.jemos.podam.test.unit.steps;
 
-import net.thucydides.core.annotations.Step;
+import net.serenitybdd.annotations.Step;
 import uk.co.jemos.podam.api.*;
 import uk.co.jemos.podam.common.AttributeStrategy;
 import uk.co.jemos.podam.common.ManufacturingContext;
@@ -29,7 +29,6 @@ import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -85,7 +84,7 @@ public class PodamFactorySteps {
     @Step("Given a Podam Factory with an Input Stream Manufacturer")
     public PodamFactory givenAPodamWithAInputStreamTypeManufacturer() {
 
-        TypeManufacturer<InputStream> manufacturer = new TypeManufacturer<InputStream>() {
+        TypeManufacturer<InputStream> manufacturer = new TypeManufacturer<>() {
 
             @Override
             public InputStream getType(DataProviderStrategy strategy,
@@ -124,9 +123,7 @@ public class PodamFactorySteps {
     @Step("Given a Set of annotations to be excluded")
     public Set<Class<? extends Annotation>> givenASetOfExcludedAnnotationsToBeExcluded(Class<? extends Annotation>... excludedAnnotations) {
         Set<Class<? extends Annotation>> retValue = new HashSet<Class<? extends Annotation>>();
-        for (int i = 0; i < excludedAnnotations.length; i++) {
-            retValue.add(excludedAnnotations[i]);
-        }
+        Collections.addAll(retValue, excludedAnnotations);
         return retValue;
     }
 
@@ -134,10 +131,8 @@ public class PodamFactorySteps {
     public ClassInfo givenAClassInfoForPojoWithWithExcludedAnnotationsAndFields(
             Class<?> pojoClass, Set<Class<? extends Annotation>> excludeAnnotations, Set<String> excludeFields) {
 
-        ClassAttributeApprover nullApprover = null;
-
         return classInfoStrategy.getClassInfo(pojoClass, excludeAnnotations,
-                excludeFields, nullApprover,
+                excludeFields, null,
                 Collections.<Method>emptySet());
 
     }
@@ -146,9 +141,7 @@ public class PodamFactorySteps {
     public Set<String> givenASetOfExcludedFields(String...excludedFields) {
 
         Set<String> retValue = new HashSet<String>();
-        for (int i = 0; i < excludedFields.length; i++) {
-            retValue.add(excludedFields[i]);
-        }
+        Collections.addAll(retValue, excludedFields);
         return retValue;
     }
 
@@ -282,16 +275,12 @@ public class PodamFactorySteps {
             throw new IllegalArgumentException("pojoClass cannot be null");
         }
 
-        String attributeName = null;
-        Class<?> realAttributeType = pojoType;
-        Type realGenericType = pojoType;
         Type[] genericTypeArgs = new Type[0];
         List<Annotation> annotations = Collections.emptyList();
-        AttributeMetadata attributeMetadata = new AttributeMetadata(
-                attributeName, realAttributeType, realGenericType,
-                genericTypeArgs, annotations, pojoClass, pojoInstance);
 
-        return attributeMetadata;
+        return new AttributeMetadata(
+                null, pojoType, pojoType,
+                genericTypeArgs, annotations, pojoClass, pojoInstance);
     }
 
     @Step("Given an Attribute Meta Data object for Enums")
@@ -301,16 +290,12 @@ public class PodamFactorySteps {
             throw new IllegalArgumentException("pojoClass cannot be null");
         }
 
-        String attributeName = null;
-        Class<?> realAttributeType = pojoClass;
-        Type realGenericType = pojoClass;
         Type[] genericTypeArgs = new Type[0];
         List<Annotation> annotations = Collections.emptyList();
-        AttributeMetadata attributeMetadata = new AttributeMetadata(
-                attributeName, realAttributeType, realGenericType,
-                genericTypeArgs, annotations, pojoClass, pojoInstance);
 
-        return attributeMetadata;
+        return new AttributeMetadata(
+                null, pojoClass, pojoClass,
+                genericTypeArgs, annotations, pojoClass, pojoInstance);
     }
 
     @Step("Given a Random Data Provider Strategy with memoization set to true")

@@ -1,9 +1,9 @@
 package uk.co.jemos.podam.test.unit.features.singletons;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Title;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.annotations.Title;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.test.dto.OneDimensionalTestPojo;
 import uk.co.jemos.podam.test.dto.SingletonWithParametersInStaticFactoryPojo;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by tedonema on 01/06/2015.
  */
-@RunWith(SerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class SingletonsTest extends AbstractPodamSteps {
 
 

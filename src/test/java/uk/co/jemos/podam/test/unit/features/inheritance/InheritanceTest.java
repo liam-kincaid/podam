@@ -1,9 +1,9 @@
 package uk.co.jemos.podam.test.unit.features.inheritance;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Title;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import net.serenitybdd.annotations.Title;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.test.dto.ClassInheritedPojo;
 import uk.co.jemos.podam.test.dto.OneDimensionalChildPojo;
@@ -16,7 +16,7 @@ import uk.co.jemos.podam.test.utils.PodamTestConstants;
 /**
  * Created by tedonema on 31/05/2015.
  */
-@RunWith(SerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class InheritanceTest extends AbstractPodamSteps {
 
     @Test

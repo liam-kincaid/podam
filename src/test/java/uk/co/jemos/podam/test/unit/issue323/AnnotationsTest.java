@@ -1,9 +1,9 @@
 package uk.co.jemos.podam.test.unit.issue323;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Title;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import net.serenitybdd.annotations.Title;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.test.dto.issue323.*;
 import uk.co.jemos.podam.test.unit.AbstractPodamSteps;
@@ -14,7 +14,7 @@ import uk.co.jemos.podam.test.dto.issue323.DurationValuePojo;
  * @author liam on 02/01/2024.
  * @since 8.0.1.RELEASE
  */
-@RunWith(SerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class AnnotationsTest extends AbstractPodamSteps {
     @Test
     @Title("Podam should handle both native and wrapped {@link java.time.Clock} values")

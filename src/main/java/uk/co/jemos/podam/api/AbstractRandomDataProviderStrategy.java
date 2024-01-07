@@ -20,10 +20,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.time.*;
-import java.time.temporal.Temporal;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Currency;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
@@ -184,8 +184,13 @@ public abstract class AbstractRandomDataProviderStrategy implements RandomDataPr
 
 		TypeManufacturer<?> arrayManufacturer = new ArrayTypeManufacturerImpl();
 		typeManufacturers.put(Cloneable.class, arrayManufacturer);
-		
-        /**
+
+		/**
+		 * Support of JDK9 upgrade
+		 */
+		addOrReplaceTypeManufacturer(Currency.class, new CurrencyTypeManufacturerImpl());
+
+		/**
          * Support of classes with annotation strategy:
          * - {@link java.time.Duration}
          * - {@link java.time.ZoneId}

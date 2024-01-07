@@ -1,9 +1,10 @@
 package uk.co.jemos.podam.test.unit.steps;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.apache.commons.lang3.StringUtils.isNoneBlank;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.junit.jupiter.api.Assertions.*;
 
-import net.thucydides.core.annotations.Step;
+import net.serenitybdd.annotations.Step;
 import uk.co.jemos.podam.test.dto.docs.example.Address;
 import uk.co.jemos.podam.test.dto.docs.example.Article;
 import uk.co.jemos.podam.test.dto.docs.example.BankAccount;
@@ -24,155 +25,117 @@ public class WalkThroughSteps {
     @Step("Then the BankAccount POJO should be correctly filled")
     public void theBankAccountPojoShouldBeCorrectlyFilled(BankAccount pojo) {
 
-        assertThat("The bank account cannot be null!", pojo, not(nullValue()));
+        assertNotNull(pojo, "The bank account cannot be null!");
 
-        assertThat("The bank account cannot be zero!",
-                pojo.getAccount(), not(equalTo(0)));
-        assertThat("The account balance cannot be zero!",
-                pojo.getBalance(), not(equalTo(0.0)));
-        assertThat("The bank name cannot be empty!", pojo.getBank(),
-                not(isEmptyOrNullString()));
-        assertThat("The sort code cannot be empty!", pojo.getSortCode(),
-                not(isEmptyOrNullString()));
-
+        assertNotEquals(0, pojo.getAccount(), "The bank account cannot be zero!");
+        assertNotEquals(0.0D, pojo.getBalance(), "The account balance cannot be zero!");
+        assertTrue(isNotEmpty(pojo.getBank()), "The bank name cannot be empty!");
+        assertTrue(isNotEmpty(pojo.getSortCode()), "The sort code cannot be empty!");
     }
 
     @Step("Then the Address POJO should be correctly filled")
     public void theAddressPojoShouldBeCorrectlyFilled(Address pojo) {
 
-        assertThat("The address cannot be null!", pojo, not(nullValue()));
-        assertThat("The address1 cannot be null!", pojo.getAddress1(), not(nullValue()));
-        assertThat("The address2 cannot be null!", pojo.getAddress2(), not(nullValue()));
-        assertThat("The city cannot be null!", pojo.getCity(), not(nullValue()));
-        assertThat("The zipCode cannot be null!", pojo.getZipCode(), not(nullValue()));
+        assertNotNull(pojo, "The address cannot be null!");
+        assertNotNull(pojo.getAddress1(), "The address1 cannot be null!");
+        assertNotNull(pojo.getAddress2(), "The address2 cannot be null!");
+        assertNotNull(pojo.getCity(), "The city cannot be null!");
+        assertNotNull(pojo.getZipCode(), "The zipCode cannot be null!");
 
         theCountryPojoShouldBeCorrectlyFilled(pojo.getCountry());
-
     }
 
 
     @Step("Then the Order POJO should be correctly filled")
     public void theOrderPojoShouldBeCorrectlyFilled(Order pojo) {
 
-        assertThat("The pojo cannot be null!", pojo, not(nullValue()));
+        assertNotNull(pojo, "The pojo cannot be null!");
 
-        assertThat("The order id must not be zero!", pojo.getId(), not(equalTo(0)));
+        assertNotEquals(0, pojo.getId(), "The order id must not be zero!");
 
         Calendar createDate = pojo.getCreateDate();
-        assertThat("The create date must not be null!", createDate, not(nullValue()));
+        assertNotNull(createDate, "The create date must not be null!");
 
-        assertThat("The order total amount must not be zero!",
-                pojo.getTotalAmount(), not(equalTo(0.0)));
+        assertNotEquals(0.0D, pojo.getTotalAmount(), "The order total amount must not be zero!");
 
         List<OrderItem> orderItems = pojo.getOrderItems();
-        assertThat("The order items must not be null!", orderItems, not(nullValue()));
-        assertThat("The order items must not be empty!",
-                orderItems, is(not(empty())));
+        assertNotNull(orderItems, "The order items must not be null!");
+        assertFalse(orderItems.isEmpty(), "The order items must not be empty!");
 
         int expectedNbrElements = 5;
 
-        assertThat("The expected number of elements "
-                + expectedNbrElements + " does not match the actual number: "
-                + orderItems.size(), orderItems, hasSize(expectedNbrElements));
+        assertEquals(orderItems.size(), expectedNbrElements, "The expected number of elements " + expectedNbrElements + " does not match the actual number: " + orderItems.size());
 
         for (OrderItem orderItem : orderItems) {
 
             theOrderItemPojoShouldBeCorrectlyFilled(orderItem);
-
         }
-
     }
 
 
     @Step("Then the OrderItem POJO should be correctly filled")
     public void theOrderItemPojoShouldBeCorrectlyFilled(OrderItem pojo) {
 
-        assertThat("The pojo cannot be null!", pojo, not(nullValue()));
-
-        assertThat("The order item id cannot be zero!",
-                pojo.getId(), not(equalTo(0)));
-
-        assertThat("The order item line amount cannot be zero!",
-                pojo.getLineAmount(), not(equalTo(0.0)));
-
-        assertThat(
-                "The Order Item note must be null because of @PodamExclude annotation",
-                pojo.getNote(), is(nullValue()));
+        assertNotNull(pojo, "The pojo cannot be null!");
+        assertNotEquals(0, pojo.getId(), "The order item id cannot be zero!");
+        assertNotEquals(0.0D, pojo.getLineAmount(), "The order item line amount cannot be zero!");
+        assertNull(pojo.getNote(), "The Order Item note must be null because of @PodamExclude annotation");
 
         theArticlePojoShouldBeCorrectlyFilled(pojo.getArticle());
-
     }
 
     @Step("Then the Article POJO should be correctly filled")
     public void theArticlePojoShouldBeCorrectlyFilled(Article pojo) {
-        assertThat("The pojo cannot be null!", pojo, not(nullValue()));
+        assertNotNull(pojo, "The pojo cannot be null!");
 
         int expectedMaxValue = 100000;
 
-        assertThat("The article id max value must not exceed "
-                + expectedMaxValue, pojo.getId(), lessThanOrEqualTo(expectedMaxValue));
+        assertTrue(pojo.getId() <= expectedMaxValue, "The article id max value must not exceed ");
 
-        assertThat("The item cost cannot be null!",
-                pojo.getItemCost(), not(nullValue()));
-        assertThat(
-                "The item cost must have a value different from zero!",
-                pojo.getItemCost(), not(equalTo(0.0)));
+        assertNotNull(pojo.getItemCost(), "The item cost cannot be null!");
+        assertNotEquals(0.0D, pojo.getItemCost(), "The item cost must have a value different from zero!");
 
-        assertThat("The article description cannot be null!",
-                pojo.getDescription(), not(nullValue()));
+        assertNotNull(pojo.getDescription(), "The article description cannot be null!");
     }
 
     @Step("Then the Country POJO should be correctly filled")
     public void theCountryPojoShouldBeCorrectlyFilled(Country pojo) {
-        assertThat("The pojo cannot be null!", pojo, not(nullValue()));
+        assertNotNull(pojo, "The pojo cannot be null!");
 
         String countryCode = pojo.getCountryCode();
-        assertThat("The country Code cannot be null!", countryCode, not(nullValue()));
+        assertNotNull(countryCode, "The country Code cannot be null!");
         int countryCodeLength = 2;
-        assertThat("The length of the country code must be "
-                        + countryCodeLength + "! but was " + countryCode.length(),
-                countryCode.length(), equalTo(countryCodeLength));
-
-        assertThat("country id must be different from zero!",
-                pojo.getCountryId(), not(equalTo(0)));
-
-        assertThat("The country description must not be empty!", pojo
-                .getDescription(), not(isEmptyOrNullString()));
+        assertEquals( countryCode.length(), countryCodeLength, "The length of the country code must be " + countryCodeLength + "! but was " + countryCode.length());
+        assertNotEquals(0, pojo.getCountryId(), "country id must be different from zero!");
+        assertTrue(isNoneBlank(pojo.getDescription()), "The country description must not be empty!");
     }
 
     @Step("Then the Client POJO should be correctly filled")
     public void theClientPojoShouldBeCorrectlyFilled(Client pojo) {
-        assertThat("The pojo cannot be null!", pojo, not(nullValue()));
+        assertNotNull(pojo, "The pojo cannot be null!");
 
-        assertThat("The client's first name cannot be empty!", pojo
-                .getFirstName(), not(isEmptyOrNullString()));
+        assertTrue(isNoneBlank(pojo.getFirstName()), "The client's first name cannot be empty!");
 
         String expectedFirstName = "Michael";
-        assertThat("The client's first name is not "
-                + expectedFirstName, pojo.getFirstName(), equalTo(expectedFirstName));
+        assertEquals(expectedFirstName, pojo.getFirstName(), "The client's first name is not ");
 
-        assertThat("The client's last name cannot be empty!", pojo
-                .getLastName(), not(isEmptyOrNullString()));
+        assertTrue(isNoneBlank(pojo.getLastName()), "The client's last name cannot be empty!");
 
-        assertThat("The date created cannot be null!",
-                pojo.getDateCreated(), not(nullValue()));
+        assertNotNull(pojo.getDateCreated(), "The date created cannot be null!");
 
         List<Order> orders = pojo.getOrders();
-        assertThat("The orders cannot be null!", orders, not(nullValue()));
+        assertNotNull(orders, "The orders cannot be null!");
         int expectedOrdersNbr = 3;
-        assertThat("The expected number of orders is "
-                + expectedOrdersNbr, orders, hasSize(expectedOrdersNbr));
+        assertEquals(orders.size(), expectedOrdersNbr, "The expected number of orders is " + expectedOrdersNbr);
 
         for (Order order : orders) {
             theOrderPojoShouldBeCorrectlyFilled(order);
         }
 
         List<Address> addresses = pojo.getAddresses();
-        assertThat("The addresses cannot be null!", addresses, not(nullValue()));
+        assertNotNull(addresses, "The addresses cannot be null!");
         int expectedAddressesNbr = 2;
-        assertThat("The expected number of addresses is "
-                        + expectedAddressesNbr,
-                addresses, hasSize(expectedAddressesNbr));
+        assertEquals(addresses.size(), expectedAddressesNbr, "The expected number of addresses is " + expectedAddressesNbr);
 
         for (Address address : addresses) {
             theAddressPojoShouldBeCorrectlyFilled(address);
@@ -183,8 +146,5 @@ public class WalkThroughSteps {
         for (BankAccount bankAccount : bankAccounts) {
             theBankAccountPojoShouldBeCorrectlyFilled(bankAccount);
         }
-
-
     }
-
 }

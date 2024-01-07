@@ -3,7 +3,7 @@ package uk.co.jemos.podam.test.dto.pdm3;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 /**
  * Pojo to test <a href="https://agileguru.atlassian.net/browse/PDM-3">PDM-3</a>
@@ -13,13 +13,13 @@ import javax.xml.bind.JAXBElement;
  */
 public class WildcardPojo {
 
-	private List<JAXBElement<?>> something = new ArrayList<JAXBElement<?>>();
+	private List<JAXBElement<Object>> something = new ArrayList<JAXBElement<Object>>();
 
 	private List<JAXBElement<? extends RuntimeException>> descendants = new ArrayList<JAXBElement<? extends RuntimeException>>();
 
 	private List<JAXBElement<? super NullPointerException>> ancestors = new ArrayList<JAXBElement<? super NullPointerException>>();
 
-	public List<JAXBElement<?>> getSomething() {
+	public List<JAXBElement<Object>> getSomething() {
 		return something;
 	}
 

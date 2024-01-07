@@ -1,7 +1,8 @@
 package uk.co.jemos.podam.test.unit.issue93;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Test;
 
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -13,6 +14,6 @@ public class Issue93UnitTest {
     @Test
     public void testLoop()  {
         A a =new PodamFactoryImpl().manufacturePojo(A.class);
-        Assert.assertNotNull("The Pojo for class A should not be null", a);
+        assertNotNull(a, "The Pojo for class A should not be null");
     }
 }

@@ -1,10 +1,10 @@
 package uk.co.jemos.podam.test.unit.issue86;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.jemos.podam.api.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by tedonema on 12/04/2015.
@@ -18,7 +18,7 @@ public class ExtraMethodsUnitTest {
 
     private PodamFactory podam = new PodamFactoryImpl(dataProviderStrategy);
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
 
         classInfoStrategy.addExtraMethod(ExtraMethodsPojo.class, "setMyString", String.class);
@@ -29,9 +29,9 @@ public class ExtraMethodsUnitTest {
     public void testExtraMethods() throws Exception {
 
         ExtraMethodsPojo pojo = podam.manufacturePojo(ExtraMethodsPojo.class);
-        Assert.assertNotNull("The pojo cannot be null", pojo);
-        Assert.assertNotNull("The long value cannot be zero", pojo.getMyLong());
-        Assert.assertNotNull("The string value cannot be null", pojo.getMyString());
-        Assert.assertTrue("The string value cannot be empty", pojo.getMyString().length() > 0);
+        assertNotNull(pojo, "The pojo cannot be null");
+        assertNotNull(pojo.getMyLong(), "The long value cannot be zero");
+        assertNotNull(pojo.getMyString(), "The string value cannot be null");
+        assertFalse(pojo.getMyString().isEmpty(), "The string value cannot be empty");
     }
 }

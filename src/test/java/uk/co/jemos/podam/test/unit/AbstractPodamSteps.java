@@ -1,6 +1,6 @@
 package uk.co.jemos.podam.test.unit;
 
-import net.thucydides.core.annotations.Steps;
+import net.serenitybdd.annotations.Steps;
 import uk.co.jemos.podam.test.unit.steps.*;
 
 /**

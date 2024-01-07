@@ -11,7 +11,7 @@ import java.util.List;
 public class Pdm3PojoGenericsConstructor {
 
 	public Pdm3PojoGenericsConstructor(
-			List<?> something,
+			List<Object> something,
 			List<? extends RuntimeException> descendants,
 			List<? super NullPointerException> ancestors) {
 		this.something = something;
@@ -19,13 +19,13 @@ public class Pdm3PojoGenericsConstructor {
 		this.ancestors = ancestors;
 	}
 
-	private List<?> something;
+	private List<Object> something;
 
 	private List<? extends RuntimeException> descendants;
 
 	private List<? super NullPointerException> ancestors;
 
-	public List<?> getSomething() {
+	public List<Object> getSomething() {
 		return something;
 	}
 

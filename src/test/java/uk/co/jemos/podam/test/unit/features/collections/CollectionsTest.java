@@ -1,10 +1,9 @@
 package uk.co.jemos.podam.test.unit.features.collections;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Title;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import uk.co.jemos.podam.api.DataProviderStrategy;
+import net.serenitybdd.annotations.Title;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.test.dto.*;
 import uk.co.jemos.podam.test.unit.AbstractPodamSteps;
@@ -16,7 +15,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Created by tedonema on 31/05/2015.
  */
-@RunWith(SerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class CollectionsTest extends AbstractPodamSteps {
 
     @Test

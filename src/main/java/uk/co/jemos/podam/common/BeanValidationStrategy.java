@@ -40,33 +40,13 @@ import java.util.concurrent.TimeUnit;
 public class BeanValidationStrategy implements AttributeStrategy<Object> {
 
 	// ------------------->> Constants
-
-	/**
-     * The minimum second supported, '-253402300800'.
-     */
-    long MIN_SECOND = -253_402_300_800L;
-
-    /**
-     * The maximum second supported, '253402300799'.
-     */
-    long MAX_SECOND = 253_402_300_799L;
-
-    /**
-     * The minimum nanosecond supported, '.'.
-     */
-    long MIN_NANOSECOND = 0L;
-
-    /**
-     * The maximum nanosecond supported, '999999999'.
-     */
-    long MAX_NANOSECOND = 999_999_999L;
     
 	// ------------------->> Instance / Static variables
 
 	private static final Logger LOG = LoggerFactory.getLogger(BeanValidationStrategy.class);
 
 	private static final String METHOD_NAME_NOW = "now";
-
+	
 	/** expected return type of an attribute */
 	private Class<?> attributeType;
 
@@ -102,6 +82,34 @@ public class BeanValidationStrategy implements AttributeStrategy<Object> {
 		if (null != findTypeFromList(annotations, AssertFalse.class)) {
 
 			return Boolean.FALSE;
+		}
+
+		if (null != findTypeFromList(annotations, Past.class)) {
+
+			long days = PodamUtils.getIntegerInRange(1, 365);
+			long offset = -TimeUnit.DAYS.toSeconds(days);
+			return timestampToReturnType(offset);
+		}
+
+		if (null != findTypeFromList(annotations, PastOrPresent.class)) {
+
+			long days = PodamUtils.getIntegerInRange(0, 365);
+			long offset = -TimeUnit.DAYS.toSeconds(days);
+			return timestampToReturnType(-days);
+		}
+
+		if (null != findTypeFromList(annotations, Future.class)) {
+
+			long days = PodamUtils.getIntegerInRange(1, 365);
+			long offset = TimeUnit.DAYS.toSeconds(days);
+			return timestampToReturnType(days);
+		}
+
+		if (null != findTypeFromList(annotations, FutureOrPresent.class)) {
+
+			long days = PodamUtils.getIntegerInRange(0, 365);
+			long offset = TimeUnit.DAYS.toSeconds(days);
+			return timestampToReturnType(days);
 		}
 
 		Size size = findTypeFromList(annotations, Size.class);
@@ -360,36 +368,9 @@ public class BeanValidationStrategy implements AttributeStrategy<Object> {
 	 */
 	private Object timestampToReturnType(Long offsetSecs) {
 
-		long timestamp;
-		if (Temporal.class.isAssignableFrom(attributeType)) {
-
-			try {
-				Method method = attributeType.getMethod(METHOD_NAME_NOW);
-				Temporal result = (Temporal)method.invoke(null);
-                return result.plus(offsetSecs, ChronoUnit.SECONDS);
-			} catch (Exception e) {
-
-				LOG.warn("We couldn't call method {} in {}",
-						METHOD_NAME_NOW, attributeType, e);
-				return null;
-			}
-
-        } else {
-
-			timestamp = System.currentTimeMillis() + offsetSecs * 1000;
-        }
+        long timestamp = System.currentTimeMillis() + offsetSecs * 1000;
 		
-		if (attributeType.isAssignableFrom(Date.class)) {
-
-			return new Date(timestamp);
-
-		} else if (attributeType.isAssignableFrom(Calendar.class)) {
-
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTimeInMillis(timestamp);
-			return calendar;
-
-		} else if (attributeType.isAssignableFrom(Clock.class)) {
+        if (attributeType.isAssignableFrom(Clock.class)) {
 
 	        Set<String> zoneIds = ZoneId.getAvailableZoneIds();
 	        Integer index = PodamUtils.getIntegerInRange(0, zoneIds.size());

@@ -1,8 +1,8 @@
 package uk.co.jemos.podam.test.unit.steps;
 
-import net.thucydides.core.annotations.Step;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.Assert;
+import net.serenitybdd.annotations.Step;
 
 import uk.co.jemos.podam.api.AbstractClassInfoStrategy;
 import uk.co.jemos.podam.api.AttributeMetadata;
@@ -83,7 +83,7 @@ public class PodamInvocationSteps {
 
         Object payload = strategy.getTypeValue(attributeMetadata,
                 manufacturingCtx, type);
-        Assert.assertNotNull("Payload must be valid", payload);
+        assertNotNull(payload, "Payload must be valid");
         return payload;
     }
 }

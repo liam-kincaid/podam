@@ -1,8 +1,10 @@
 package uk.co.jemos.podam.test.unit.issue86;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import uk.co.jemos.podam.api.DefaultClassInfoStrategy;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -18,7 +20,7 @@ public class MyInitPojoUnitTest {
 
     private final PodamFactory podam = new PodamFactoryImpl();
 
-    @Before
+    @BeforeEach
     public void init() throws Exception {
         classInfoStrategy.addExtraMethod(MyInitPojo.class, "init", String.class, String.class);
     }
@@ -27,10 +29,8 @@ public class MyInitPojoUnitTest {
     public void testMyInitPojo() throws Exception {
 
         MyInitPojo pojo = podam.manufacturePojo(MyInitPojo.class);
-        Assert.assertNotNull(pojo);
-        Assert.assertNotSame(pojo.getString1(), pojo.getBackupString1());
-        Assert.assertNotSame(pojo.getString2(), pojo.getBackupString2());
-
-
+        assertNotNull(pojo);
+        assertNotSame(pojo.getString1(), pojo.getBackupString1());
+        assertNotSame(pojo.getString2(), pojo.getBackupString2());
     }
 }

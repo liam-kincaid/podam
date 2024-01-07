@@ -1,6 +1,7 @@
 package uk.co.jemos.podam.test.unit.features.validatorFramework;
 
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import uk.co.jemos.podam.api.AbstractExternalFactory;
 
 import java.lang.reflect.Type;
@@ -28,7 +29,7 @@ public class ValidatorExternalFactory extends AbstractExternalFactory {
      */
     @Override
     public <T> T manufacturePojo(Class<T> pojoClass, Type... genericTypeArgs) {
-        Assert.fail("Received request for " + pojoClass + " with "
+        fail("Received request for " + pojoClass + " with "
                 + Arrays.toString(genericTypeArgs));
         return null;
     }

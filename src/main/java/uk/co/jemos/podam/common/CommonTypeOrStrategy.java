@@ -77,11 +77,45 @@ public interface CommonTypeOrStrategy {
     }
 
     /**
-     * Calculate a couple of years
+     * Calculate a timestamps
      *
      * @param annotations list of annotations attached to an attribute
-     * @param years       A amount a year
+     * @param timestamps       A timestamps
      */
+    default void getTimestamps(List<Annotation> annotations, AtomicReference<Long> timestamps) {
+
+        Instant now = Instant.now();
+
+        if (annotations.stream().anyMatch(Future.class::isInstance)) {
+
+            Instant futur = now.plus(1L, ChronoUnit.DAYS);
+            timestamps.set(PodamUtils.getLongInRange(futur.toEpochMilli(), Instant.ofEpochMilli(Long.MAX_VALUE).getEpochSecond()));
+
+        } else if (annotations.stream().anyMatch(FutureOrPresent.class::isInstance)) {
+
+            timestamps.set(PodamUtils.getLongInRange(now.toEpochMilli(), Instant.ofEpochMilli(Long.MAX_VALUE).getEpochSecond()));
+
+        } else if (annotations.stream().anyMatch(PastOrPresent.class::isInstance)) {
+
+            timestamps.set(PodamUtils.getLongInRange(Instant.ofEpochMilli(Long.MIN_VALUE).getEpochSecond(), now.toEpochMilli()));
+
+        } else if (annotations.stream().anyMatch(Past.class::isInstance)) {
+
+            Instant past = now.minus(1L, ChronoUnit.DAYS);
+            timestamps.set(PodamUtils.getLongInRange(Instant.ofEpochMilli(Long.MIN_VALUE).getEpochSecond(), past.toEpochMilli()));
+
+        } else {
+
+            timestamps.set(PodamUtils.getLongInRange(Instant.ofEpochMilli(Long.MIN_VALUE).getEpochSecond(), Instant.ofEpochMilli(Long.MAX_VALUE).getEpochSecond()));
+        }
+    }
+
+        /**
+         * Calculate a couple of years
+         *
+         * @param annotations list of annotations attached to an attribute
+         * @param years       A amount a year
+         */
     default void getYearsMonthsDays(List<Annotation> annotations, AtomicReference<Integer> years, AtomicReference<Integer> months, AtomicReference<Integer> days) {
 
         YearMonth now = YearMonth.now();
